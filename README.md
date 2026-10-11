@@ -105,3 +105,32 @@ Level 15 --> Level 16
 - as I've realised that only ncat can do SSL/TLS encryption
 - So I did ncat --ssl localhost 30001
 - password: kS0Hf0u5HiXFwKMKFqXvPdOTNGGa0X8V
+
+Level 16 --> Level 17
+- I found out which port is listening using nmap 
+- I did nmap -p 31000-32000 localhost
+- It gave out 5 ports that are listening
+- I simply brute force everyone of them with ncat --ssl localhost {portnum}
+- and one of them gave out the openssh private key
+- found out from online that you could use -sV flag to make it give out service so it shows ssl/echo
+- I found out that using openssl won't work but using ncat works bacause the key started with k which is a shortcut
+- if I want to use openssl I need to use -quiet flag to make it ignore shortcut
+- password: RL3QgeKo8FFveuQpIwkGsxCVTfqxXYes
+
+Level 17 --> Level 18
+- I did diff password.old password.new 
+- I got two passwords I assume the second password is the password to the next one and the first one is the password for the previous level
+- nope the first one is the right one apparently
+- password: OQxXZjELndr90zuhOTDYBEomI0SZITXI
+
+Level 18 --> 19:
+- I use scp command to download the readme file from bandit18, even though I am pretty sure thats not what you're supposed to do
+- I did scp -P 2220 bandit18@bandit.labs.overthewire.org:./readme .
+- so I searched it up you can just do the ssh command then put "cat ./readme", then it will output the password
+- password: KpsOfPkcP7i1FlIExk2QEjyt6dw8dxZI
+
+Level 19 --> Level 20:
+- I executed the setuid by doing ./bandit20-do
+- then i realised when you do that you basically becomes bandit20 so you can do the command you want as bandit 20 
+- so i did ./bandit20-do cat /etc/bandit_pass/bandit20
+- password: 4pIjcunZ0fK2vmp3IwfG8Vf7VhxD6pOA
