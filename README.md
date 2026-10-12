@@ -92,6 +92,7 @@ Level 13 --> Level 14:
 - I used ((Get-Content -Raw sshkey.private) -replace "`r`n", "`n") | Set-Content -NoNewline sshkey.private this command
 - and Add-Content -NoNewline -Value "`n" sshkey.private
 - password: aaWecNkG4FhxJQxz07uiwzVP6bJiYS65
+#note! apparently i just had to put a new line below the sshkey to bypass the format issue, then change the permission to make it work
 
 Level 14 --> Level 15:
 - I tried to use ssh bandit14@localhost -p 30000
@@ -134,3 +135,67 @@ Level 19 --> Level 20:
 - then i realised when you do that you basically becomes bandit20 so you can do the command you want as bandit 20 
 - so i did ./bandit20-do cat /etc/bandit_pass/bandit20
 - password: 4pIjcunZ0fK2vmp3IwfG8Vf7VhxD6pOA
+
+Level 20 --> Level 21:
+- i executed suconnect and it tells me "This program will connect to the given port on localhost using TCP. If it receives the correct password from the other side, the next password is transmitted back."
+- then i tried to just connect it with 2220
+- but it requires the password immediately and just shuts off immediately
+- so I tried to do ./suconnect 2220 4pIjcunZ0fK2vmp3IwfG8Vf7VhxD6pOA, and didn't work
+- so I had to put the password to a temp file
+- then do nc so that it listens to a random port and i feed it with the file with my password in it
+- nc -l -p 4444 < /tmp/hero_pass & (-l means listens, & do the job in background and give me my terminal back)
+- then I connect the suconnect with the random port
+- ./suconnect 4444
+- password: bW9kBv5WC3P4yoDyf12LSdGuNz5ka6hY
+
+Level 21 --> Level 22:
+- I went to /etc/cron.d as specified in the title
+- I saw whats inside cronjob_bandit22
+- it pointed me to /usr/bin/cronjob_bandit22.sh
+- so I cat whats inside that
+- then i saw it has a file in /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+- then i cat whats inside and the password is inside 
+- password: RYVux2rHEm9tiXHmLFzuR7Vhx6AZQMEz
+
+Level 22 --> Level 23:
+- I read the file inside cronjob_bandit23.sh
+- found out that it is basically just doing echo I am user $myname | md5sum | cut -d ' ' -f 1 and thats the file name of the password I am looking for
+- so I did exactly the same as what that command do 
+- and replace myname with bandit23
+- so I did echo I am user bandit23 | md5sum | cut -d ' ' -f 1
+- then i go into the file with that name on it
+- md5sum means a hash technique
+- and the cut -d ' ' -f 1 just means cur the empty spaces at the end
+- password: gKXDTAXnIz3OBxiPjRZ2uqutUlPZrBsw
+
+Level 23 --> Level 24:
+- Here is the code that was in /usr/bin/cronjob_bandit24.sh
+#!/bin/bash
+
+shopt -s nullglob
+
+myname=$(whoami)
+
+cd /var/spool/"$myname"/foo || exit
+echo "Executing and deleting all scripts in /var/spool/$myname/foo:"
+for i in * .*;
+do
+    if [ "$i" != "." ] && [ "$i" != ".." ];
+    then
+        echo "Handling $i"
+        owner="$(stat --format "%U" "./$i")"
+        if [ "${owner}" = "bandit23" ] && [ -f "$i" ]; then
+            timeout -s 9 60 "./$i"
+        fi
+        rm -rf "./$i"
+    fi
+done
+- It basically executes all scripts in /var/spool/"$myname"/foo meaning all scripts in /var/spool/"bandit24"/foo as bandit 24
+- so I created a .sh file in /var/spool/bandit24/foo
+- in it I basically copied the password from /etc/bandit_pass/bandit24 to /tmp/hero_pass24
+- so i did cat /etc/bandit_pass/bandit24 > /tmp/hero_pass24
+- then I cat /tmp/hero_pass24
+- and it gave me the password
+- password: hVQMk3lJNsmQ7VF3ubyrNNBom7BOgVXv
+
+Level 24 --> Level 25:
