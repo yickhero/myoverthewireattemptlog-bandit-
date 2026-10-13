@@ -199,3 +199,93 @@ done
 - password: hVQMk3lJNsmQ7VF3ubyrNNBom7BOgVXv
 
 Level 24 --> Level 25:
+- I was tring to do nc localhost 30002 | echo "hVQMk3lJNsmQ7VF3ubyrNNBom7BOgVXv" from 0000 - 9999 
+- but I dont know how to do the last part
+- I found out that I need to put the nc command on the bottom of the pipeline
+- and to echo all the numbers I had to do
+- for i in {0000..9999}: do echo "password $i"; done
+- so the whole command is in {0000..9999}; do echo "hVQMk3lJNsmQ7VF3ubyrNNBom7BOgVXv $i"; done | nc localhost 30002
+- password: SoHfqMOEqIX2IYKVciZxvgpR9a2Djx4P
+
+Level 25 --> Level 26:
+- I got the sshkey for bandit26 so I tried to log in it
+- by putting it in my own machine and change the permission using icacls sshkey5.private /grant "%USERNAME%:(R)"
+- also fix the format by putting an empty line under the key
+- then do ssh -i sshkey5.private bandit26@bandit.labs.overthewire.org -p 2220
+- then I got instantly kicked 
+- apparently it doesnt give you a shell when you log on, it prints an art logo then kicks you out
+- So you have to shrink your window so it doesn't show the whole artwork yet
+- then you press v to get into the vi text editor
+- then you have to change the editor's default shell by doing :set shell=/bin/bash
+- then do :sh to get your shell back
+- after that it gives you another setuid which you can use it to get access to /etc/bandit_pass/bandit27
+
+Level 26 --> Level 27:
+- it shows you the password from last level
+- password: STJLJBRRphMxKB392CT4iOr5CbzPU9ER
+
+Level 27 --> Level 28:
+- I tried to just git clone -p 2220 ssh://bandit27-git@bandit.labs.overthewire.org/home/bandit27-git/repo
+- but you have to specify the port number
+- to specify you put the port behind the website
+- so you do git clone ssh://bandit27-git@bandit.labs.overthewire.org:2220/home/bandit27-git/repo
+- then you go inside the repo and cat the file
+- password: y8Yd2ssKcpHpud7UvOSOxwamRMzIGIeQ
+
+Level 28 --> Level 29:
+- I did exactly the same thing as the last level and got the file but the password is just xxxxxxxx
+- so apparently you have to go back into previous commits
+- to do that you have to do git log
+- then copy the hash that is shown e.g. 
+commit de09b8205d8d115e2749670df21bf1882bc98e34 (HEAD -> master, origin/master, origin/HEAD)
+Author: Morla Porla <morla@overthewire.org>
+Date:   Sat Sep 26 21:54:43 2026 +0000
+
+    fix info leak
+
+commit ad8a5f812f24e793d2657f926f503a2fd1c5e256
+Author: Morla Porla <morla@overthewire.org>
+Date:   Sat Sep 26 21:54:43 2026 +0000
+
+    add missing data
+
+commit {{e4337f154bd5cc106d3d047fc72f90b187ffcfab}} --> this is the hash
+Author: Ben Dover <noone@overthewire.org>
+Date:   Sat Sep 26 21:54:43 2026 +0000
+- then you do git show ad8a5f812f24e793d2657f926f503a2fd1c5e256
+- password: Em7eGtqaMySwNFjCpwzzHhLhospOcdt0
+
+Level 29 --> Level 30:
+- I did the same thing as last level, I got the file and did the git log
+- I found out that there are different branches and I probably has to go to different branch
+- To list out branch you do git branch -a
+- then you can do use switch command to go to different branch
+- do git switch dev to go to the dev branch
+- then you can cat the file for the password
+- password: jq9Dfg2rXsfYsWMgFuKlXhphjdH7USgX
+
+Level 30 --> level 31:
+- I did the same thing as the last few level and got the file
+- I did git log and git branch -a nothing shows up
+- I found out about tags, where it shows the hidden database for existing bookmarks
+- so you do git tag, and there is a file calles secret
+- so i did git show secret
+- password: 82NkymblpGBYmIXG6ZQ8YldBYstHpfUf
+
+Level 31 --> Level 32:
+- I searched up how to commit repo and you have to do add --> commit --> push (if its a remote server)
+- this is in the README.md file 
+This time your task is to push a file to the remote repository.
+
+Details:
+    File name: key.txt
+    Content: 'May I come in?'
+    Branch: master
+- so I wrote 'May I come in?' in my txt file 
+- then I did git add key.txt
+- git commit -m "commiting"
+- git push origin master
+- password: pWuj5jBQ6IgV0NXwiH6g1pXRF8S1YvbT
+
+Level 32 --> Level 33:
+- 
