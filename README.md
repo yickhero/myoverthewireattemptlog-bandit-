@@ -288,4 +288,9 @@ Details:
 - password: pWuj5jBQ6IgV0NXwiH6g1pXRF8S1YvbT
 
 Level 32 --> Level 33:
-- 
+- I found out that once you connected to the remote machine it is an uppercase shell, which basically makes every command I do to uppercase
+- to break out of it, I need to use a regular shell, which i had to do $0 which gives me my regular shell back
+- so I just had to cat /etc/bandit_pass/bandit33
+- password: u4P2CyPOwPGLe94RdD9Uo2FxFwvnFswM
+
+##That is the end of my attempt on OverTheWire Level 0 - Level 34
